@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Rocketq.API</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FastEndpoints" Version="5.*" />
+    <PackageReference Include="FastEndpoints.Security" Version="5.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Modules\Core\Rocketq.Identity\Rocketq.Identity.csproj" />
+    <ProjectReference Include="..\Modules\Core\Rocketq.Rooms\Rocketq.Rooms.csproj" />
+    <ProjectReference Include="..\Modules\Core\Rocketq.Feed\Rocketq.Feed.csproj" />
+  </ItemGroup>
+
+</Project>
