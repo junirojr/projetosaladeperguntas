@@ -1,6 +1,8 @@
 using FastEndpoints.Testing;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Rocketq.Identity.Persistence;
 using Testcontainers.PostgreSql;
 
 namespace Rocketq.Tests;
@@ -29,6 +31,13 @@ public class AppFactory : AppFixture<Program>
         builder.UseSetting("Jwt:Issuer", "rocketq");
         builder.UseSetting("Jwt:Audience", "rocketq-ui");
         builder.UseSetting("Cors:AllowedOrigins:0", "http://localhost:3000");
+    }
+
+    protected override async ValueTask SetupAsync()
+    {
+        using IServiceScope scope = Services.CreateScope();
+        IdentityDbContext db = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+        await db.Database.MigrateAsync();
     }
 
     protected override async ValueTask TearDownAsync()

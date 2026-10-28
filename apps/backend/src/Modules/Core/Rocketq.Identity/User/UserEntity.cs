@@ -23,4 +23,7 @@ public class UserEntity : AuditableEntity
             PasswordHash = passwordHash
         };
     }
+
+    public bool VerifyPassword(string plaintext) =>
+        BCrypt.Net.BCrypt.Verify(plaintext, PasswordHash);
 }

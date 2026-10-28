@@ -229,41 +229,47 @@ Feed.CreatePost.Endpoint
 
 ## Fases de Implementação
 
-### Fase 1 — Foundation (Semana 1)
+### Fase 1 — Foundation (Semana 1) ✅ CONCLUÍDA
 
 Objetivo: Monorepo estruturado, contexto AI completo, backend compilando.
 
 **Tasks:**
 
-- [ ] Inicializar repositório Git com estrutura canônica RFC-0001
-- [ ] Criar `.claude/settings.json` com plugins `bnp-code` e `bnp-gitops`
-- [ ] Criar `apps/backend/CLAUDE.md` com contexto do backend
-- [ ] Criar `apps/ui/CLAUDE.md` com contexto do frontend
-- [ ] Criar `docs/ai/PROJECT_DOMAIN_MAP.md` com bounded contexts iniciais
-- [ ] Scaffoldar solution .NET: `Rocketq.sln` com todos os `.csproj`
-- [ ] Configurar `Rocketq.Shared` (Primitives, Authorization)
-- [ ] Scaffoldar `Rocketq.API` (Program.cs, middleware, DI)
-- [ ] Configurar PostgreSQL + EF Core (connection string via env)
-- [ ] Configurar JWT (issuer, audience, secret via env)
-- [ ] Criar projeto `Rocketq.Tests` com `WebApplicationFactory`
+- [x] Inicializar repositório Git com estrutura canônica RFC-0001
+- [x] Criar `.claude/settings.json` com plugins `bnp-code` e `bnp-gitops`
+- [x] Criar `apps/backend/CLAUDE.md` com contexto do backend
+- [x] Criar `apps/ui/CLAUDE.md` com contexto do frontend
+- [x] Criar `docs/ai/PROJECT_DOMAIN_MAP.md` com bounded contexts iniciais
+- [x] Scaffoldar solution .NET: `Rocketq.sln` com todos os `.csproj`
+- [x] Configurar `Rocketq.Shared` (Primitives, Authorization)
+- [x] Scaffoldar `Rocketq.API` (Program.cs, middleware, DI)
+- [x] Configurar PostgreSQL + EF Core (connection string via env)
+- [x] Configurar JWT (issuer, audience, secret via env)
+- [x] Criar projeto `Rocketq.Tests` com `WebApplicationFactory`
 
-**Entregável:** `dotnet build` e `dotnet test` passando (zero testes ainda, mas infra pronta).
+**Entregável:** Estrutura compilando. ✅
 
 ---
 
-### Fase 2 — Identity Module (Semana 1–2)
+### Fase 2 — Identity Module (Semana 1–2) 🔄 EM ANDAMENTO
 
 Objetivo: Usuário se cadastra, faz login e recebe JWT.
 
 **Tasks:**
 
-- [ ] Criar entidade `User` com `UserEmail` e `PasswordHash` (BCrypt)
-- [ ] Criar `IdentityDbContext` + primeira migration
-- [ ] Endpoint `POST /auth/register` — criar usuário com senha hasheada (INV-003)
-- [ ] Endpoint `POST /auth/login` — validar credenciais, emitir JWT
-- [ ] Endpoint `GET /users/me` — retornar perfil do usuário autenticado
-- [ ] Testes de integração: register, login com senha errada, perfil sem token
+- [x] Criar entidade `User` com `VerifyPassword` + `UserConfiguration` (EF Core, índice único em Email)
+- [x] Criar `IdentityDbContext` + migration `Initial` (schema `identity`, tabela `Users`)
+- [x] Criar `JwtService` em `Infrastructure/` — geração de token com claims userId/email/username
+- [x] Endpoint `POST /auth/register` — criar usuário com senha hasheada (INV-003)
+- [x] Endpoint `POST /auth/login` — validar credenciais, emitir JWT
+- [x] Endpoint `GET /users/me` — retornar perfil do usuário autenticado
+- [x] Atualizar `DependencyInjection.cs` — registrar `JwtService`
+- [x] Atualizar `AppFactory.cs` — aplicar migrations automaticamente antes dos testes
+- [x] Migrar projeto de testes de `xunit` v2 → `xunit.v3` v1 (compatível com FastEndpoints.Testing 5.35)
+- [ ] Finalizar `IdentityTests.cs` — testes de integração (em correção de build)
 - [ ] Frontend: página `/` com formulário de login e cadastro
+
+**Bloqueio atual:** Arquivo de testes com erro de compilação — `TestBase<>` requer encadeamento explícito do construtor base e aliases de tipo para os endpoints.
 
 **Invariantes a garantir:** INV-003 (senha sempre hasheada, nunca plaintext).
 

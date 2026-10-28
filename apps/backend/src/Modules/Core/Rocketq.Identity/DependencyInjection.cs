@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Rocketq.Identity.Infrastructure;
 using Rocketq.Identity.Persistence;
 
 namespace Rocketq.Identity;
@@ -13,6 +14,8 @@ public static class DependencyInjection
     {
         services.AddDbContext<IdentityDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("Default")));
+
+        services.AddSingleton<JwtService>();
 
         return services;
     }
